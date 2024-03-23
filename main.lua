@@ -8,39 +8,54 @@ if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
   end
 end
 
+love.graphics.setDefaultFilter("nearest", "nearest")
 
 world = love.physics.newWorld(0, 0, true)
 lang = "en"
+
+-- libraries
+anim8 = require("libs.anim8.anim8")
+sti = require("libs.Simple-Tiled-Implementation/sti")
+camera = require("libs.hump.camera")
 
 require("game_state")
 require("utils")
 require("physics")
 require("player")
 require("dialog")
-
+-- Content
 require("scenes.scripts.scripts")
 require("scenes.scenes")
 
+cam = camera()
+camZoom = 3
+cam:zoom(camZoom)
 
-wall = {}
-wall.x = 100
-wall.y = 100
-wall.width = 150
-wall.height = 150
-wall.body = love.physics.newBody(world, wall.width, wall.height, "static")
-wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
-wall.fixture = love.physics.newFixture(wall.body, wall.shape)
-wall.fixture:setUserData("Wall")
+gameMap = sti("assets/maps/test.lua", {"box2d"})
+gameMap:box2d_init(world)
+walls = {}
 
-wall.scenes = {scene_hello_world, scene_choice_three}
-
-points = 0
-dialogTimer = 0
+--wall[1].scenes = {scene_hello_world, scene_choice_three}
 
 function love.load()
   state = "init"
 
   logText = ""
+
+  if gameMap.layers["walls"] then
+    for i, obj in pairs(gameMap.layers["walls"].objects) do
+      local wall = {}
+      wall.x = obj.x
+      wall.y = obj.y
+      wall.width = obj.width
+      wall.height = obj.height
+      wall.body = love.physics.newBody(world, wall.width, wall.height, "static")
+      wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
+      wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+      wall.fixture:setUserData("Wall")
+      table.insert(walls, wall)
+    end
+  end
 end
 
 function love.update(dt)
@@ -48,30 +63,69 @@ function love.update(dt)
     state = "running"
   end
 
-  dialogTimer = dialogTimer + dt
-  if dialogTimer > 2 then
-    dialogTimer = 0
-  end
-
   if state == "init" or state == "running" then
     world:update(dt)
     player:update(dt)
+    gameMap:update(dt)
     --dialog:update(dt)
   end
 
   if logText:len() >= gameHeight then
     logText = ""
   end
+
+  cam:updateCam()
+end
+
+function cam:updateCam()
+  cam:lookAt((player.body:getX() + player.width / 2), (player.body:getY() + player.height / 2))
+
+  -- Get width/height of background
+  local mapW = gameMap.width * gameMap.tilewidth
+  local mapH = gameMap.height * gameMap.tileheight
+
+  -- Left border
+  if cam.x < gameWidth/2/camZoom then
+    cam.x = gameWidth/2/camZoom
+  end
+
+  -- Right border
+  if cam.y < gameHeight/2/camZoom then
+    cam.y = gameHeight/2/camZoom
+  end
+
+  -- Right border
+  if cam.x > (mapW - gameWidth/2/camZoom) then
+    cam.x = (mapW - gameWidth/2/camZoom)
+  end
+  -- Bottom border
+  if cam.y > (mapH - gameHeight/2/camZoom) then
+    cam.y = (mapH - gameHeight/2/camZoom)
+  end
 end
 
 function love.draw()
-  love.graphics.setColor(255, 255, 0)
-  love.graphics.rectangle("line", wall.x, wall.y, wall.width, wall.height)
+  cam:attach()
+    gameMap:drawLayer(gameMap.layers["ground"])
+    gameMap:drawLayer(gameMap.layers["overview"])
 
-  player:draw()
-  dialog:draw()
+    -- for i, obj in pairs(walls) do
+    --   log(dump({
+    --     obj.width,
+    --     obj.height,
+    --     obj.x,
+    --     obj.y
+    --   }))
+    -- end
 
-  love.graphics.print(logText, 10, 10)
+    player:draw()
+    dialog:draw()
+
+    gameMap:box2d_draw()
+
+    love.graphics.print(logText, 10, 10)
+  cam:detach()
+
 end
 
 function love.keypressed(key)
