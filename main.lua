@@ -9,20 +9,11 @@ if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
 end
 
 
-function contains(_set, key)
-  return _set[key] ~= nil
-end
-
-
 world = love.physics.newWorld(0, 0, true)
 lang = "en"
 
-function log(text)
-  logText = logText .. "\n" .. text
-end
-
 require("game_state")
-require("debug")
+require("utils")
 require("physics")
 require("player")
 require("dialog")

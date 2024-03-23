@@ -26,7 +26,7 @@ scene = {
 function dialog:registerScene(current_scene)
   scene.config = current_scene
   scene.script = current_scene.script[lang]
-  scene.len = getTLen(current_scene.script[lang])
+  scene.len = getLen(current_scene.script[lang])
   scene.step = 1
   return scene
 end
@@ -63,7 +63,7 @@ function dialog:chooseOption(choice)
         script,
         dialog.choice
       )
-      scene.len = getTLen(script)
+      scene.len = getLen(script)
     end
 
   end
@@ -133,8 +133,8 @@ function dialog:draw()
       script = scene.script
       if script and scene.complete == false then
         if script[scene.step].choices then
-          dialog.menuChoiceLen = getTLen(script[scene.step].choices)
-          drawChoiceMenu(script[scene.step].choices, dialog)
+          dialog.menuChoiceLen = getLen(script[scene.step].choices)
+          dialog:drawChoiceMenu(script[scene.step].choices, dialog)
         else
           scene.inMenu = false
 
@@ -151,7 +151,7 @@ function dialog:append(script, newScript)
   for i=1, #newScript do script[n+i] = newScript[i] end
 end
 
-function drawChoiceMenu(choices, dialog)
+function dialog:drawChoiceMenu(choices, dialog)
   scene.inMenu = true
 
   local choice_padding = 0
