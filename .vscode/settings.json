@@ -1,0 +1,16 @@
+{
+  "Lua.diagnostics.globals": [
+    "love"
+  ],
+  "Lua.diagnostics.disable": [
+    "lowercase-global",
+    "deprecated",
+    "undefined-global"
+  ],
+  "files.exclude": {
+    "**/*.rpyc": true,
+    "**/*.rpa": true,
+    "**/*.rpymc": true,
+    "**/cache/": true
+  }
+}
