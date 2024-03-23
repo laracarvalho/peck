@@ -23,9 +23,3 @@ script_hello_world = {
     { "Fulano ", "This was a nice conversation" },
   }
 }
-
-script_choice_three = {
-  ["en"] = {
-    { "Another person", "Oh this is another scene from your branches! How awesome!" },
-  }
-}
