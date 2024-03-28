@@ -4,7 +4,7 @@ dialog = {}
 dialog = {}
 dialog.box = {}
 dialog.box.padding = 20
-dialog.box.height = gameHeight / 4
+dialog.box.height = windowHeight / 4
 dialog.box.x = dialog.box.padding
 dialog.box.width = (windowWidth - dialog.box.x - dialog.box.padding)
 dialog.box.y = (windowHeight - dialog.box.height - dialog.box.padding)
@@ -116,7 +116,7 @@ end
 function dialog:draw()
   if dialog.open then
       love.graphics.setColor(255, 255, 255)
-      love.graphics.rectangle("fill", 0, 0, windowWidth, windowHeight)
+      love.graphics.rectangle("fill", 20, dialog.box.y, windowWidth-40, dialog.box.height)
 
       love.graphics.setColor(0, 0, 0)
 

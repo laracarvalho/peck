@@ -8,21 +8,15 @@ if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
   end
 end
 
-scale = 5
-updatedScale = 2
 love.graphics.setDefaultFilter("nearest", "nearest")
 
 world = love.physics.newWorld(0, 0, true)
 lang = "en"
-fullscreen = false
-
-gameWidth, gameHeight = 540/2, 320/2 --fixed game resolution
 windowWidth, windowHeight = love.window.getDesktopDimensions()
 
 
 -- libraries
 anim8 = require("libs.anim8.anim8")
-push = require("libs.push-master.push")
 
 require("gamestate")
 require("utils")
@@ -53,12 +47,11 @@ function love.update(dt)
     player:update(dt)
   end
 
-  if logText:len() >= gameHeight then
+  if logText:len() >= windowHeight then
     logText = ""
   end
 
   cam:updateCam(map)
-
 end
 
 function love.draw()

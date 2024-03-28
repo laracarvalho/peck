@@ -9,13 +9,6 @@ function cam:updateCam(map)
   local w = love.graphics.getWidth()/4
   local h = love.graphics.getHeight()/4
 
-    -- log(dump({
-    --   cam.x,
-    --   cam.y,
-    --   w,
-    --   h
-    -- }))
-
     -- Left border
     if cam.x < w/2 then
       cam.x = w/2
@@ -32,12 +25,6 @@ function cam:updateCam(map)
 
     -- -- Right border
     if cam.x > (mapW - w/2) then
-      log(dump({
-        cam.x,
-        w/2,
-        mapW
-      }))
-
       cam.x = (mapW - w/2)
     end
 
