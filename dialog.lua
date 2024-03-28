@@ -4,10 +4,10 @@ dialog = {}
 dialog = {}
 dialog.box = {}
 dialog.box.padding = 20
-dialog.box.height = gameHeight / 3
+dialog.box.height = gameHeight / 4
 dialog.box.x = dialog.box.padding
-dialog.box.width = (gameWidth - dialog.box.x - dialog.box.padding)
-dialog.box.y = (gameHeight - dialog.box.height - dialog.box.padding)
+dialog.box.width = (windowWidth - dialog.box.x - dialog.box.padding)
+dialog.box.y = (windowHeight - dialog.box.height - dialog.box.padding)
 dialog.open = false
 dialog.choice = {}
 dialog.menuChoice = 1
@@ -113,36 +113,31 @@ function dialog:keypressed(key)
 
 end
 
-function dialog:update(dt)
-  if choice ~= {} then
-    dialog:clearScenes()
-    dialog:registerScene(scene_choice_three)
-  end
-end
-
 function dialog:draw()
   if dialog.open then
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.rectangle("fill", dialog.box.x, dialog.box.y, dialog.box.width, dialog.box.height)
+      love.graphics.setColor(255, 255, 255)
+      love.graphics.rectangle("fill", 0, 0, windowWidth, windowHeight)
 
-    love.graphics.setColor(0, 0, 255)
+      love.graphics.setColor(0, 0, 0)
 
-    if scene.config and scene.config == {} then
-      log("No scene to load.")
-    else
-      script = scene.script
-      if script and scene.complete == false then
-        if script[scene.step].choices then
-          dialog.menuChoiceLen = getLen(script[scene.step].choices)
-          dialog:drawChoiceMenu(script[scene.step].choices, dialog)
-        else
-          scene.inMenu = false
+      if scene.config and scene.config == {} then
+        log("No scene to load.")
+      else
+        script = scene.script
+        if script and scene.complete == false then
+          if script[scene.step].choices then
+            dialog.menuChoiceLen = getLen(script[scene.step].choices)
+            dialog:drawChoiceMenu(script[scene.step].choices, dialog)
+          else
+            scene.inMenu = false
 
-          love.graphics.print(script[scene.step][1], dialog.box.x + dialog.box.padding, dialog.box.y + dialog.box.padding)
-          love.graphics.print(script[scene.step][2], dialog.box.x + (dialog.box.padding), dialog.box.y + (dialog.box.padding * 2))
+            love.graphics.print(script[scene.step][1], dialog.box.x + dialog.box.padding, dialog.box.y + dialog.box.padding)
+            love.graphics.print(script[scene.step][2], dialog.box.x + (dialog.box.padding), dialog.box.y + (dialog.box.padding * 2))
+          end
         end
       end
-    end
+
+    love.graphics.setColor(255,255,255)
   end
 end
 
