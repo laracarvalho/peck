@@ -26,9 +26,9 @@ function tilemap:load(path)
   return map
 end
 
-function tilemap:draw(map)
-  for i, layer in ipairs(map.layers) do
-    if layer.type == "tilelayer" then
+function tilemap:draw(map, name)
+  for _, layer in ipairs(map.layers) do
+    if layer.type == "tilelayer" and layer.name == name then
       for y = 0, layer.height - 1 do
         for x = 0, layer.width - 1 do
           local index = (x + y * layer.width) + 1
