@@ -25,6 +25,7 @@ require("player")
 require("dialog")
 require("tilemap")
 require("camera")
+require("gamemaps.main")
 -- Content
 require("scenes.scripts.scripts")
 require("scenes.scenes")
@@ -35,8 +36,7 @@ function love.load()
 
   state = "init"
   logText = ""
-  map = tilemap:load("assets.maps.test")
-  objects = tilemap:loadObjects(world, map)
+  mapData = gamemaps:loadMap("main")
 end
 
 function love.update(dt)
@@ -54,19 +54,18 @@ function love.update(dt)
     logText = ""
   end
 
-  cam:updateCam(map)
+  cam:updateCam(mapData.map)
 end
 
 function love.draw()
   cam:attach()
 
-    tilemap:draw(map, "ground")
-    tilemap:draw(map, "overview")
+    gamemaps:drawUnderPlayer()
     player:draw()
+    gamemaps:drawOverPlayer()
 
-  --love.graphics.pop()
   cam:detach()
-  
+
   dialog:draw()
   love.graphics.print(logText, 10, 10)
 end

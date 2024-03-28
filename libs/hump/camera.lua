@@ -212,5 +212,5 @@ function camera:lockWindow(x, y, x_min, x_max, y_min, y_max, smoother, ...)
 end
 
 -- the module
-return setmetatable({new = new, smooth = camera.smooth},
+return setmetatable({new = new, smooth = camera.none},
 	{__call = function(_, ...) return new(...) end})
