@@ -30,6 +30,9 @@ require("scenes.scripts.scripts")
 require("scenes.scenes")
 
 function love.load()
+  font = love.graphics.newFont(20)
+  love.graphics.setFont(font)
+
   state = "init"
   logText = ""
   map = tilemap:load("assets.maps.test")
@@ -57,7 +60,8 @@ end
 function love.draw()
   cam:attach()
 
-    tilemap:draw(map)
+    tilemap:draw(map, "ground")
+    tilemap:draw(map, "overview")
     player:draw()
 
   --love.graphics.pop()
@@ -77,7 +81,6 @@ function love.keypressed(key)
   end
 
   if state == "running" and key == "return" then
-    log("You clicked it!")
     --if love.physics.getDistance(player.fixture, objects[1].fixture) <= 1 and dialog.open == false then
       dialog.open = true
       state = "dialog"

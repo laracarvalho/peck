@@ -132,7 +132,7 @@ function dialog:draw()
             scene.inMenu = false
 
             love.graphics.print(script[scene.step][1], dialog.box.x + dialog.box.padding, dialog.box.y + dialog.box.padding)
-            love.graphics.print(script[scene.step][2], dialog.box.x + (dialog.box.padding), dialog.box.y + (dialog.box.padding * 2))
+            love.graphics.print(script[scene.step][2], dialog.box.x + (dialog.box.padding), dialog.box.y + (dialog.box.padding * 3))
           end
         end
       end
