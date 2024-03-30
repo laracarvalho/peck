@@ -6,6 +6,7 @@ A simple game engine for Love2d.
 - Basic key-based player movement;
 - Branching dialogue engine with support for localization;
 - General utilities for gamedev and debugging;
+- Scene and state management;
 
 ## Todo
 - Physics:
@@ -14,6 +15,5 @@ A simple game engine for Love2d.
 - Inventory:
   - [ ] Make inventory.
 - Scene management:
-  - [ ] Allow for scenes and different states (needed)
   - [ ] Saving system (needed)
   - [ ] Game menu with user config.

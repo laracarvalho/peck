@@ -14,11 +14,10 @@ world = love.physics.newWorld(0, 0, true)
 lang = "en"
 windowWidth, windowHeight = love.window.getDesktopDimensions()
 
-
 -- libraries
 anim8 = require("libs.anim8.anim8")
+Gamestate = require("libs.hump.gamestate")
 
-require("gamestate")
 require("utils")
 require("physics")
 require("player")
@@ -30,43 +29,71 @@ require("gamemaps.main")
 require("scenes.scripts.scripts")
 require("scenes.scenes")
 
+-- Game States
+game = {}
+menu = {}
+paused = {}
+
 function love.load()
   font = love.graphics.newFont(20)
   love.graphics.setFont(font)
-
-  state = "init"
   logText = ""
+
+  Gamestate.registerEvents()
+  Gamestate.switch(menu)
+end
+
+function menu:draw()
+  love.graphics.print("Press Enter to continue", 10, 10)
+end
+
+function menu:keyreleased(key, code)
+  if key == 'return' then
+    Gamestate.switch(game)
+  end
+end
+
+function game:keyreleased(key, code)
+  if key == 'tab' then
+    Gamestate.switch(menu)
+  end
+
+  if key == 'p' then
+    state = "dialog"
+  end
+end
+
+function game:enter()
+  -- setup entities here
   mapData = gamemaps:loadMap("main")
 end
 
-function love.update(dt)
-  --log("test")
-  if state == "init" then
-    state = "running"
-  end
+function game:update(dt)
+  world:update(dt)
+  player:update(dt)
+  cam:updateCam(mapData.map)
+end
 
-  if state == "init" or state == "running" then
-    world:update(dt)
-    player:update(dt)
-  end
+function game:draw()
+  cam:attach()
+    gamemaps:drawUnderPlayer()
+    player:draw()
+    gamemaps:drawOverPlayer()
+  cam:detach()
+
+  dialog:draw()
+end
+
+function love.update(dt)
+  log("test")
 
   if logText:len() >= windowHeight then
     logText = ""
   end
 
-  cam:updateCam(mapData.map)
 end
 
 function love.draw()
-  cam:attach()
-
-    gamemaps:drawUnderPlayer()
-    player:draw()
-    gamemaps:drawOverPlayer()
-
-  cam:detach()
-
-  dialog:draw()
   love.graphics.print(logText, 10, 10)
 end
 
@@ -79,14 +106,14 @@ function love.keypressed(key)
     love.event.quit(0)
   end
 
-  if state == "running" and key == "return" then
-    --if love.physics.getDistance(player.fixture, objects[1].fixture) <= 1 and dialog.open == false then
-      dialog.open = true
-      state = "dialog"
-      --if wall.scenes ~= {} then
-        dialog:registerScene(scene_hello_world)
-      --end
-    --end
-  end
+  -- if state == "running" and key == "return" then
+  --   --if love.physics.getDistance(player.fixture, objects[1].fixture) <= 1 and dialog.open == false then
+  --     dialog.open = true
+  --     state = "dialog"
+  --     --if wall.scenes ~= {} then
+  --       dialog:registerScene(scene_hello_world)
+  --     --end
+  --   --end
+  -- end
 
 end

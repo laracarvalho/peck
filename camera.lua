@@ -23,6 +23,15 @@ function cam:updateCam(map)
     local mapW = map.width * map.tilewidth
     local mapH = map.height * map.tileheight
 
+    log(dump({
+      cam.x,
+      cam.y,
+      w,
+      h,
+      mapW,
+      mapH
+    }))
+
     -- -- Right border
     if cam.x > (mapW - w/2) then
       cam.x = (mapW - w/2)
