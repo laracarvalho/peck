@@ -12,15 +12,25 @@ function inList(list, item)
 end
 
 function tableInList(list, item)
-  for i,v in pairs(list) do
-
-    if v[1] == item then
+  for i = 1, #list do
+    if (list[i][1] == item) then
       return i
-    else
-      return 0
     end
   end
+  return false
 end
+
+-- function tableInList(list, item)
+--   for i,v in pairs(list) do
+
+
+--     if v[1] == item then
+--       return i
+--     else
+--       return 0
+--     end
+--   end
+-- end
 
 
 function log(text)

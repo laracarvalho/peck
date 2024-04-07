@@ -34,6 +34,8 @@ game = {}
 menu = {}
 paused = {}
 
+mapData = {}
+
 function love.load()
   font = love.graphics.newFont(20)
   love.graphics.setFont(font)
@@ -61,11 +63,20 @@ function game:keyreleased(key, code)
   if key == 'p' then
     state = "dialog"
   end
+
+  if key == 'l' then
+    game:goToMap("second", 50, 150)
+  end
 end
 
 function game:enter()
   -- setup entities here
   mapData = gamemaps:loadMap("main")
+end
+
+function game:goToMap(map, x, y)
+  mapData = gamemaps:loadMap(map)
+  player:transport(x, y)
 end
 
 function game:update(dt)
@@ -85,7 +96,10 @@ function game:draw()
 end
 
 function love.update(dt)
-  log("test")
+  --log("test")
+
+  --log(tableInList(gamemaps.maps, "second"))
+
 
   if logText:len() >= windowHeight then
     logText = ""

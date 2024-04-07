@@ -92,3 +92,8 @@ end
 function player:draw()
   player.anim:draw(player.ss[player.dir], player.body:getX(), player.body:getY(), nil)
 end
+
+function player:transport(x, y)
+  player.body:setX(x)
+  player.body:setY(y)
+end

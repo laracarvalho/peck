@@ -2,6 +2,7 @@ gamemaps = {}
 
 gamemaps.maps = {
   {"main", "assets.maps.test" },
+  {"second", "assets.maps.second" },
 }
 
 gamemaps.mapData = {}

@@ -119,6 +119,7 @@ function dialog:draw()
       love.graphics.rectangle("fill", 20, dialog.box.y, windowWidth-40, dialog.box.height)
 
       love.graphics.setColor(0, 0, 0)
+      love.graphics.setLineWidth(windowWidth-80)
 
       if scene.config and scene.config == {} then
         log("No scene to load.")
