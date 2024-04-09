@@ -61,7 +61,9 @@ function game:keyreleased(key, code)
   end
 
   if key == 'p' then
-    state = "dialog"
+    dialog.open = true
+    dialog:registerScene(scene_hello_world)
+
   end
 
   if key == 'l' then
@@ -80,8 +82,10 @@ function game:goToMap(map, x, y)
 end
 
 function game:update(dt)
-  world:update(dt)
-  player:update(dt)
+  if dialog.open == false then
+    world:update(dt)
+    player:update(dt)
+  end
   cam:updateCam(mapData.map)
 end
 
@@ -98,9 +102,6 @@ end
 function love.update(dt)
   --log("test")
 
-  --log(tableInList(gamemaps.maps, "second"))
-
-
   if logText:len() >= windowHeight then
     logText = ""
   end
@@ -112,22 +113,11 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  if state == "dialog" then
+  if dialog.open then
     dialog:keypressed(key)
   end
 
   if key == "escape" then
     love.event.quit(0)
   end
-
-  -- if state == "running" and key == "return" then
-  --   --if love.physics.getDistance(player.fixture, objects[1].fixture) <= 1 and dialog.open == false then
-  --     dialog.open = true
-  --     state = "dialog"
-  --     --if wall.scenes ~= {} then
-  --       dialog:registerScene(scene_hello_world)
-  --     --end
-  --   --end
-  -- end
-
 end

@@ -3,7 +3,7 @@ dialog = {}
 -- dialog properties
 dialog = {}
 dialog.box = {}
-dialog.box.padding = 20
+dialog.box.padding = 30
 dialog.box.height = windowHeight / 4
 dialog.box.x = dialog.box.padding
 dialog.box.width = (windowWidth - dialog.box.x - dialog.box.padding)
@@ -70,12 +70,11 @@ function dialog:chooseOption(choice)
 end
 
 function dialog:keypressed(key)
-  if key == "tab" then
+  if key == "q" then
     if scene.config.persist == false then
       scene.step = 1
     end
     dialog:unregisterScene(scene)
-    state = "running"
     dialog.open = false
   end
 
@@ -92,13 +91,13 @@ function dialog:keypressed(key)
       end
     end
 
-    if key == "return" then
+    if key == "e" then
       dialog:chooseOption(dialog.menuChoice)
     end
   end
 
   if scene.config ~= {} then
-    if key == "return" then
+    if key == "e" then
       if scene.step < scene.len then
         scene.step = scene.step + 1
       end
@@ -116,16 +115,17 @@ end
 function dialog:draw()
   if dialog.open then
       love.graphics.setColor(255, 255, 255)
-      love.graphics.rectangle("fill", 20, dialog.box.y, windowWidth-40, dialog.box.height)
+      love.graphics.rectangle("fill", dialog.box.x, dialog.box.y, windowWidth-40, dialog.box.height)
 
       love.graphics.setColor(0, 0, 0)
-      love.graphics.setLineWidth(windowWidth-80)
+      love.graphics.setLineWidth(windowWidth - 80)
 
       if scene.config and scene.config == {} then
         log("No scene to load.")
       else
         script = scene.script
         if script and scene.complete == false then
+
           if script[scene.step].choices then
             dialog.menuChoiceLen = getLen(script[scene.step].choices)
             dialog:drawChoiceMenu(script[scene.step].choices, dialog)
@@ -138,7 +138,7 @@ function dialog:draw()
         end
       end
 
-    love.graphics.setColor(255,255,255)
+    love.graphics.setColor(255, 255, 255)
   end
 end
 
@@ -167,13 +167,20 @@ function dialog:drawChoiceMenu(choices, dialog)
       y = optionY,
     })
 
-    love.graphics.print(phrase, optionX, optionY)
-  end
+    log(dump({
+      phrase, optionX, optionY
+    }))
 
-  local pointerX = choicePositions[dialog.menuChoice].x - 10
-  local pointerY = choicePositions[dialog.menuChoice].y - 10
-  local pointerWidth = dialog.box.width - (dialog.box.padding) - 10
-  local pointerHeight = 35
+    
+      love.graphics.print(phrase, optionX, optionY)
+    end
 
-  love.graphics.rectangle("line", pointerX, pointerY, pointerWidth, pointerHeight)
+  local pointerX = choicePositions[dialog.menuChoice].x
+  local pointerY = choicePositions[dialog.menuChoice].y + 20
+  --local pointerWidth = (windowWidth-40) - (dialog.box.padding) - 30
+  --local pointerHeight = 15
+
+  love.graphics.setColor(0, 255, 0)
+  love.graphics.rectangle("fill", pointerX, pointerY, windowWidth/4, 5)
+  love.graphics.setColor(255, 255, 255)
 end

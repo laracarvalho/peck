@@ -1,13 +1,17 @@
 tilemap = {}
-tilemap.resize = 2
 
-function tilemap:load(path)
+sourceFolder = "/assets/maps/"
+
+function tilemap:load(path, source)
   local map = require(path)
 
   map.quads = {}
 
   local tileset = map.tilesets[1]
-  map.image = love.graphics.newImage("/assets/maps/" .. tileset.image)
+  if source then
+    sourceFolder = source
+  end
+  map.image = love.graphics.newImage(sourceFolder .. tileset.image)
 
   for y = 0, (tileset.imageheight / tileset.tileheight) - 1 do
     for x = 0, (tileset.imagewidth / tileset.tilewidth) - 1 do
